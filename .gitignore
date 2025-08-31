@@ -1,0 +1,37 @@
+# Node
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+
+# Vite
+.vite/
+
+# Supabase
+supabase/.temp/
+supabase/migrations/
+
+# Misc
+*.log
+.idea/
+.vscode/
+
+# Others
+coverage/
+
+# Optional: Ignore public uploads
+public/uploads/
