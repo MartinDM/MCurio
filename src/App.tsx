@@ -16,25 +16,50 @@ import { Layout } from "@/components";
 import { resources } from "@/config/resources";
 import { authProvider, dataProvider, liveProvider } from "@/providers";
 import {
-  CompanyCreatePage,
-  CompanyEditPage,
-  CompanyListPage,
+  ConditionReportCreatePage,
+  ConditionReportEditPage,
+  ConditionReportListPage,
+  ContactCreatePage,
+  ContactEditPage,
+  ContactListPage,
   DashboardPage,
+  EmployeeCreatePage,
+  EmployeeEditPage,
+  EmployeeListPage,
+  ExhibitionCreatePage,
+  ExhibitionEditPage,
+  ExhibitionsListPage,
+  ItemCreatePage,
+  ItemEditPage,
+  ItemListPage,
+  LandingPage,
   LoginPage,
-  TasksCreatePage,
-  TasksEditPage,
-  TasksListPage,
+  MuseumCreatePage,
+  MuseumEditPage,
+  MuseumListPage,
+  NoMuseumPage,
+  PricingPage,
+  ProfileCreatePage,
+  ProfileEditPage,
+  ProfileListPage,
 } from "@/routes";
-
-import "@refinedev/antd/dist/reset.css";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <ConfigProvider theme={RefineThemes.Blue}>
+      <ConfigProvider
+        theme={{
+          ...RefineThemes.Blue,
+          token: {
+            ...RefineThemes.Blue.token,
+            fontFamily: '"Noto Serif", serif',
+          },
+        }}
+      >
         <AntdApp>
           <DevtoolsProvider>
             <Refine
+              Title={() => <>MCurio | Museum CMS</>}
               routerProvider={routerProvider}
               dataProvider={dataProvider}
               liveProvider={liveProvider}
@@ -49,6 +74,9 @@ const App = () => {
               }}
             >
               <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/pricing" element={<PricingPage />} />
+
                 <Route
                   element={
                     <Authenticated
@@ -61,24 +89,51 @@ const App = () => {
                     </Authenticated>
                   }
                 >
-                  <Route index element={<DashboardPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
 
-                  <Route
-                    path="/tasks"
-                    element={
-                      <TasksListPage>
-                        <Outlet />
-                      </TasksListPage>
-                    }
-                  >
-                    <Route path="new" element={<TasksCreatePage />} />
-                    <Route path="edit/:id" element={<TasksEditPage />} />
+                  <Route path="/items">
+                    <Route index element={<ItemListPage />} />
+                    <Route path="new" element={<ItemCreatePage />} />
+                    <Route path="edit/:id" element={<ItemEditPage />} />
                   </Route>
 
-                  <Route path="/companies">
-                    <Route index element={<CompanyListPage />} />
-                    <Route path="new" element={<CompanyCreatePage />} />
-                    <Route path="edit/:id" element={<CompanyEditPage />} />
+                  <Route path="/contacts">
+                    <Route index element={<ContactListPage />} />
+                    <Route path="new" element={<ContactCreatePage />} />
+                    <Route path="edit/:id" element={<ContactEditPage />} />
+                  </Route>
+
+                  <Route path="/condition-reports">
+                    <Route index element={<ConditionReportListPage />} />
+                    <Route path="new" element={<ConditionReportCreatePage />} />
+                    <Route
+                      path="edit/:id"
+                      element={<ConditionReportEditPage />}
+                    />
+                  </Route>
+
+                  <Route path="/exhibitions">
+                    <Route index element={<ExhibitionsListPage />} />
+                    <Route path="new" element={<ExhibitionCreatePage />} />
+                    <Route path="edit/:id" element={<ExhibitionEditPage />} />
+                  </Route>
+
+                  <Route path="/museums">
+                    <Route index element={<MuseumListPage />} />
+                    <Route path="new" element={<MuseumCreatePage />} />
+                    <Route path="edit/:id" element={<MuseumEditPage />} />
+                  </Route>
+
+                  <Route path="/colleagues">
+                    <Route index element={<EmployeeListPage />} />
+                    <Route path="new" element={<EmployeeCreatePage />} />
+                    <Route path="edit/:id" element={<EmployeeEditPage />} />
+                  </Route>
+
+                  <Route path="/profiles">
+                    <Route index element={<ProfileListPage />} />
+                    <Route path="new" element={<ProfileCreatePage />} />
+                    <Route path="edit/:id" element={<ProfileEditPage />} />
                   </Route>
 
                   <Route path="*" element={<ErrorComponent />} />
@@ -96,6 +151,8 @@ const App = () => {
                 >
                   <Route path="/login" element={<LoginPage />} />
                 </Route>
+
+                <Route path="/no-museum" element={<NoMuseumPage />} />
               </Routes>
               <UnsavedChangesNotifier />
               <DocumentTitleHandler />

@@ -1,79 +1,46 @@
 import { useList } from "@refinedev/core";
-import type { GetFieldsFromList } from "@refinedev/nestjs-query";
 
 import { UnorderedListOutlined } from "@ant-design/icons";
-import { Card, List, Skeleton as AntdSkeleton, Space } from "antd";
+import { Card, List, Skeleton as AntdSkeleton, Space, Tag } from "antd";
 import dayjs from "dayjs";
 
-import { CustomAvatar, Text } from "@/components";
-import type {
-  DashboardLatestActivitiesAuditsQuery,
-  DashboardLatestActivitiesDealsQuery,
-} from "@/graphql/types";
-
-import {
-  DASHBOARD_LATEST_ACTIVITIES_AUDITS_QUERY,
-  DASHBOARD_LATEST_ACTIVITIES_DEALS_QUERY,
-} from "./queries";
+import { Text } from "@/components";
 
 type Props = { limit?: number };
 
+type ConditionReport = {
+  id: string;
+  item_id: string;
+  date?: string | null;
+  status?: "excellent" | "stable" | "needs_attention" | null;
+  notes?: string | null;
+  created_at?: string | null;
+};
+
 export const DashboardLatestActivities = ({ limit = 5 }: Props) => {
-  const {
-    data: audit,
-    isLoading: isLoadingAudit,
-    isError,
-    error,
-  } = useList<GetFieldsFromList<DashboardLatestActivitiesAuditsQuery>>({
-    resource: "audits",
+  const { data, isLoading, isError, error } = useList<ConditionReport>({
+    resource: "condition_reports",
     pagination: {
       pageSize: limit,
     },
     sorters: [
       {
-        field: "createdAt",
+        field: "date",
         order: "desc",
       },
     ],
-    filters: [
-      {
-        field: "action",
-        operator: "in",
-        value: ["CREATE", "UPDATE"],
-      },
-      {
-        field: "targetEntity",
-        operator: "eq",
-        value: "Deal",
-      },
-    ],
-    meta: {
-      gqlQuery: DASHBOARD_LATEST_ACTIVITIES_AUDITS_QUERY,
-    },
-  });
-
-  const dealIds = audit?.data?.map((audit) => audit.targetId);
-
-  const { data: deals, isLoading: isLoadingDeals } = useList<
-    GetFieldsFromList<DashboardLatestActivitiesDealsQuery>
-  >({
-    resource: "deals",
-    queryOptions: { enabled: !!dealIds?.length },
-    pagination: {
-      mode: "off",
-    },
-    filters: [{ field: "id", operator: "in", value: dealIds }],
-    meta: {
-      gqlQuery: DASHBOARD_LATEST_ACTIVITIES_DEALS_QUERY,
-    },
   });
 
   if (isError) {
-    console.error("Error fetching latest activities", error);
+    console.error("Error fetching latest inspections", error);
     return null;
   }
 
-  const isLoading = isLoadingAudit || isLoadingDeals;
+  const statusColor: Record<string, string> = {
+    excellent: "green",
+    stable: "blue",
+    needs_attention: "orange",
+  };
 
   return (
     <Card
@@ -91,7 +58,7 @@ export const DashboardLatestActivities = ({ limit = 5 }: Props) => {
         >
           <UnorderedListOutlined />
           <Text size="sm" style={{ marginLeft: ".5rem" }}>
-            Latest activities
+            Latest inspections
           </Text>
         </div>
       }
@@ -141,34 +108,23 @@ export const DashboardLatestActivities = ({ limit = 5 }: Props) => {
       ) : (
         <List
           itemLayout="horizontal"
-          dataSource={audit?.data || []}
+          dataSource={data?.data || []}
           renderItem={(item) => {
-            const deal =
-              deals?.data.find((deal) => deal.id === `${item.targetId}`) ||
-              undefined;
-
             return (
               <List.Item>
                 <List.Item.Meta
-                  avatar={
-                    <CustomAvatar
-                      shape="square"
-                      size={48}
-                      src={deal?.company.avatarUrl}
-                      name={deal?.company.name}
-                    />
-                  }
-                  title={dayjs(deal?.createdAt).format("MMM DD, YYYY - HH:mm")}
+                  title={dayjs(item.date ?? item.created_at).format(
+                    "MMM DD, YYYY",
+                  )}
                   description={
                     <Space size={4}>
-                      <Text strong>{item.user?.name}</Text>
-                      <Text>
-                        {item.action === "CREATE" ? "created" : "moved"}
-                      </Text>
-                      <Text strong>{deal?.title}</Text>
-                      <Text>deal</Text>
-                      <Text>{item.action === "CREATE" ? "in" : "to"}</Text>
-                      <Text strong>{deal?.stage?.title || "Unassigned"}.</Text>
+                      <Text strong>Item #{item.item_id}</Text>
+                      <Tag
+                        color={statusColor[item.status || "stable"] || "blue"}
+                      >
+                        {item.status || "stable"}
+                      </Tag>
+                      {item.notes ? <Text>{item.notes}</Text> : null}
                     </Space>
                   }
                 />

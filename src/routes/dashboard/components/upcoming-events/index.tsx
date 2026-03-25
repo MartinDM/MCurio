@@ -1,40 +1,45 @@
 import { useList } from "@refinedev/core";
-import type { GetFieldsFromList } from "@refinedev/nestjs-query";
 
 import { CalendarOutlined } from "@ant-design/icons";
 import { Badge, Card, List, Skeleton as AntdSkeleton } from "antd";
 import dayjs from "dayjs";
 
 import { Text } from "@/components";
-import type { DashboardCalendarUpcomingEventsQuery } from "@/graphql/types";
 
-import { DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY } from "./queries";
+type ExhibitionEvent = {
+  id: string;
+  name: string;
+  status?: "planned" | "current" | "past" | null;
+  start_date?: string | null;
+  end_date?: string | null;
+};
 
 export const CalendarUpcomingEvents = () => {
-  const { data, isLoading } = useList<
-    GetFieldsFromList<DashboardCalendarUpcomingEventsQuery>
-  >({
-    resource: "events",
+  const { data, isLoading } = useList<ExhibitionEvent>({
+    resource: "exhibitions",
     pagination: {
       pageSize: 5,
     },
     sorters: [
       {
-        field: "startDate",
+        field: "start_date",
         order: "asc",
       },
     ],
     filters: [
       {
-        field: "startDate",
+        field: "start_date",
         operator: "gte",
         value: dayjs().format("YYYY-MM-DD"),
       },
     ],
-    meta: {
-      gqlQuery: DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY,
-    },
   });
+
+  const statusColor: Record<string, string> = {
+    planned: "blue",
+    current: "green",
+    past: "default",
+  };
 
   return (
     <Card
@@ -100,10 +105,10 @@ export const CalendarUpcomingEvents = () => {
           dataSource={data?.data || []}
           renderItem={(item) => {
             const renderDate = () => {
-              const start = dayjs(item.startDate).format(
+              const start = dayjs(item.start_date).format(
                 "MMM DD, YYYY - HH:mm",
               );
-              const end = dayjs(item.endDate).format("MMM DD, YYYY - HH:mm");
+              const end = dayjs(item.end_date).format("MMM DD, YYYY - HH:mm");
 
               return `${start} - ${end}`;
             };
@@ -111,11 +116,13 @@ export const CalendarUpcomingEvents = () => {
             return (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Badge color={item.color} />}
+                  avatar={
+                    <Badge color={statusColor[item.status || "planned"]} />
+                  }
                   title={<Text size="xs">{`${renderDate()}`}</Text>}
                   description={
                     <Text ellipsis={{ tooltip: true }} strong>
-                      {item.title}
+                      {item.name}
                     </Text>
                   }
                 />

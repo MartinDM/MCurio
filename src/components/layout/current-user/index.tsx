@@ -5,11 +5,15 @@ import { useGetIdentity } from "@refinedev/core";
 import { SettingOutlined } from "@ant-design/icons";
 import { Button, Popover } from "antd";
 
-import type { User } from "@/graphql/schema.types";
-
 import { CustomAvatar } from "../../custom-avatar";
 import { Text } from "../../text";
 import { AccountSettings } from "../account-settings";
+
+type User = {
+  id: string;
+  name?: string;
+  avatarUrl?: string;
+};
 
 export const CurrentUser = () => {
   const [opened, setOpened] = React.useState(false);

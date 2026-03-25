@@ -1,8 +1,6 @@
-import { useCustom } from "@refinedev/core";
+import { useList } from "@refinedev/core";
 
 import { Col, Row } from "antd";
-
-import type { DashboardTotalCountsQuery } from "@/graphql/types";
 
 import {
   CalendarUpcomingEvents,
@@ -10,13 +8,21 @@ import {
   DashboardLatestActivities,
   DashboardTotalCountCard,
 } from "./components";
-import { DASHBOARD_TOTAL_COUNTS_QUERY } from "./queries";
 
 export const DashboardPage = () => {
-  const { data, isLoading } = useCustom<DashboardTotalCountsQuery>({
-    url: "",
-    method: "get",
-    meta: { gqlQuery: DASHBOARD_TOTAL_COUNTS_QUERY },
+  const { data: itemsData, isLoading: itemsLoading } = useList({
+    resource: "items",
+    pagination: { current: 1, pageSize: 1 },
+  });
+
+  const { data: exhibitionsData, isLoading: exhibitionsLoading } = useList({
+    resource: "exhibitions",
+    pagination: { current: 1, pageSize: 1 },
+  });
+
+  const { data: museumsData, isLoading: museumsLoading } = useList({
+    resource: "museums",
+    pagination: { current: 1, pageSize: 1 },
   });
 
   return (
@@ -24,23 +30,23 @@ export const DashboardPage = () => {
       <Row gutter={[32, 32]}>
         <Col xs={24} sm={24} xl={8}>
           <DashboardTotalCountCard
-            resource="companies"
-            isLoading={isLoading}
-            totalCount={data?.data.companies.totalCount}
+            resource="items"
+            isLoading={itemsLoading}
+            totalCount={itemsData?.total}
           />
         </Col>
         <Col xs={24} sm={24} xl={8}>
           <DashboardTotalCountCard
-            resource="contacts"
-            isLoading={isLoading}
-            totalCount={data?.data.contacts.totalCount}
+            resource="exhibitions"
+            isLoading={exhibitionsLoading}
+            totalCount={exhibitionsData?.total}
           />
         </Col>
         <Col xs={24} sm={24} xl={8}>
           <DashboardTotalCountCard
-            resource="deals"
-            isLoading={isLoading}
-            totalCount={data?.data.deals.totalCount}
+            resource="museums"
+            isLoading={museumsLoading}
+            totalCount={museumsData?.total}
           />
         </Col>
       </Row>

@@ -1,5 +1,6 @@
 # Node
 node_modules/
+copilot-instructions.md
 
 # Build output
 dist/

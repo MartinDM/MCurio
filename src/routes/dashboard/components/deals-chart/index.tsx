@@ -1,68 +1,36 @@
-import React from "react";
-
 import { useList } from "@refinedev/core";
-import type { GetFieldsFromList } from "@refinedev/nestjs-query";
 
-import { DollarOutlined } from "@ant-design/icons";
-import { Area, type AreaConfig } from "@ant-design/plots";
-import { Card } from "antd";
+import { TagsOutlined } from "@ant-design/icons";
+import { Card, List } from "antd";
 
 import { Text } from "@/components";
-import type { DashboardDealsChartQuery } from "@/graphql/types";
 
-import { DASHBOARD_DEALS_CHART_QUERY } from "./queries";
-import { mapDealsData } from "./utils";
+type ItemRecord = {
+  id: string;
+  title?: string | null;
+  name?: string | null;
+  artist?: string | null;
+  created_at?: string | null;
+};
 
 export const DashboardDealsChart = () => {
-  const { data } = useList<GetFieldsFromList<DashboardDealsChartQuery>>({
-    resource: "dealStages",
-    filters: [{ field: "title", operator: "in", value: ["WON", "LOST"] }],
-    meta: {
-      gqlQuery: DASHBOARD_DEALS_CHART_QUERY,
+  const { data, isLoading } = useList<ItemRecord>({
+    resource: "items",
+    pagination: {
+      current: 1,
+      pageSize: 8,
     },
   });
 
-  const dealData = React.useMemo(() => {
-    return mapDealsData(data?.data);
-  }, [data?.data]);
-
-  const config: AreaConfig = {
-    isStack: false,
-    data: dealData,
-    xField: "timeText",
-    yField: "value",
-    seriesField: "state",
-    animation: true,
-    startOnZero: false,
-    smooth: true,
-    legend: {
-      offsetY: -6,
-    },
-    yAxis: {
-      tickCount: 4,
-      label: {
-        formatter: (v) => {
-          return `$${Number(v) / 1000}k`;
-        },
-      },
-    },
-    tooltip: {
-      formatter: (data) => {
-        return {
-          name: data.state,
-          value: `$${Number(data.value) / 1000}k`,
-        };
-      },
-    },
-    areaStyle: (datum) => {
-      const won = "l(270) 0:#ffffff 0.5:#b7eb8f 1:#52c41a";
-      const lost = "l(270) 0:#ffffff 0.5:#f3b7c2 1:#ff4d4f";
-      return { fill: datum.state === "Won" ? won : lost };
-    },
-    color: (datum) => {
-      return datum.state === "Won" ? "#52C41A" : "#F5222D";
-    },
-  };
+  const items = (data?.data ?? []).slice().sort((firstItem, secondItem) => {
+    const firstCreatedAt = firstItem.created_at
+      ? new Date(firstItem.created_at).getTime()
+      : 0;
+    const secondCreatedAt = secondItem.created_at
+      ? new Date(secondItem.created_at).getTime()
+      : 0;
+    return secondCreatedAt - firstCreatedAt;
+  });
 
   return (
     <Card
@@ -77,14 +45,31 @@ export const DashboardDealsChart = () => {
             gap: "8px",
           }}
         >
-          <DollarOutlined />
+          <TagsOutlined />
           <Text size="sm" style={{ marginLeft: ".5rem" }}>
-            Deals
+            Recent Items
           </Text>
         </div>
       }
     >
-      <Area {...config} height={325} />
+      <List
+        loading={isLoading}
+        dataSource={items}
+        locale={{ emptyText: "No items yet" }}
+        renderItem={(item) => {
+          const itemTitle = item.title || item.name || "Untitled item";
+          const subtitleParts = [item.artist, item.created_at].filter(Boolean);
+
+          return (
+            <List.Item>
+              <List.Item.Meta
+                title={itemTitle}
+                description={subtitleParts.join(" · ")}
+              />
+            </List.Item>
+          );
+        }}
+      />
     </Card>
   );
 };

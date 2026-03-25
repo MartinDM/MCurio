@@ -1,22 +1,29 @@
 import React from "react";
-
-import { ThemedLayoutV2, ThemedTitleV2 } from "@refinedev/antd";
-
-import { GitHubBanner } from "./gh-banner";
+import { ThemedLayoutV2 } from "@refinedev/antd";
 import { Header } from "./header";
+import { Footer } from "./footer";
+import { Sider } from "./sider";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
-    <>
-      <GitHubBanner />
+    <div className="mcurio-app-shell">
       <ThemedLayoutV2
         Header={Header}
-        Title={(titleProps) => {
-          return <ThemedTitleV2 {...titleProps} text="Refine" />;
+        Sider={Sider}
+        Title={() => {
+          return (
+            <div style={{ padding: "10px 0" }}>
+              <div style={{ fontSize: 20, fontWeight: 700 }}>MCurio</div>
+              <div style={{ fontSize: 12, opacity: 0.72 }}>Museum CMS</div>
+            </div>
+          );
         }}
       >
-        {children}
+        <div className="mcurio-page-frame">
+          <div className="mcurio-app-content">{children}</div>
+          <Footer />
+        </div>
       </ThemedLayoutV2>
-    </>
+    </div>
   );
 };

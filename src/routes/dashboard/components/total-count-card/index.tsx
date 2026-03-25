@@ -1,12 +1,16 @@
 import React from "react";
 
-import { AuditOutlined, ShopOutlined, TeamOutlined } from "@ant-design/icons";
+import {
+  ShopOutlined,
+  TagsOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import { Area, type AreaConfig } from "@ant-design/plots";
 import { Card, Skeleton } from "antd";
 
 import { Text } from "@/components";
 
-type Type = "companies" | "contacts" | "deals";
+type Type = "items" | "exhibitions" | "museums";
 
 type Props = {
   resource: Type;
@@ -149,12 +153,12 @@ const variants: {
     data: { index: string; value: number }[];
   };
 } = {
-  companies: {
+  items: {
     primaryColor: "#1677FF",
     secondaryColor: "#BAE0FF",
     icon: (
       <IconWrapper color="#E6F4FF">
-        <ShopOutlined
+        <TagsOutlined
           className="md"
           style={{
             color: "#1677FF",
@@ -162,31 +166,16 @@ const variants: {
         />
       </IconWrapper>
     ),
-    title: "Number of companies",
+    title: "Number of items",
     data: [
-      {
-        index: "1",
-        value: 3500,
-      },
-      {
-        index: "2",
-        value: 2750,
-      },
-      {
-        index: "3",
-        value: 5000,
-      },
-      {
-        index: "4",
-        value: 4250,
-      },
-      {
-        index: "5",
-        value: 5000,
-      },
+      { index: "1", value: 1800 },
+      { index: "2", value: 2400 },
+      { index: "3", value: 2100 },
+      { index: "4", value: 2700 },
+      { index: "5", value: 2600 },
     ],
   },
-  contacts: {
+  exhibitions: {
     primaryColor: "#52C41A",
     secondaryColor: "#D9F7BE",
     icon: (
@@ -199,40 +188,21 @@ const variants: {
         />
       </IconWrapper>
     ),
-    title: "Number of contacts",
+    title: "Number of exhibitions",
     data: [
-      {
-        index: "1",
-        value: 10000,
-      },
-      {
-        index: "2",
-        value: 19500,
-      },
-      {
-        index: "3",
-        value: 13000,
-      },
-      {
-        index: "4",
-        value: 17000,
-      },
-      {
-        index: "5",
-        value: 13000,
-      },
-      {
-        index: "6",
-        value: 20000,
-      },
+      { index: "1", value: 900 },
+      { index: "2", value: 1200 },
+      { index: "3", value: 1100 },
+      { index: "4", value: 1400 },
+      { index: "5", value: 1300 },
     ],
   },
-  deals: {
+  museums: {
     primaryColor: "#FA541C",
     secondaryColor: "#FFD8BF",
     icon: (
       <IconWrapper color="#FFF2E8">
-        <AuditOutlined
+        <ShopOutlined
           className="md"
           style={{
             color: "#FA541C",
@@ -240,40 +210,13 @@ const variants: {
         />
       </IconWrapper>
     ),
-    title: "Total deals in pipeline",
+    title: "Number of museums",
     data: [
-      {
-        index: "1",
-        value: 1000,
-      },
-      {
-        index: "2",
-        value: 1300,
-      },
-      {
-        index: "3",
-        value: 1200,
-      },
-      {
-        index: "4",
-        value: 2000,
-      },
-      {
-        index: "5",
-        value: 800,
-      },
-      {
-        index: "6",
-        value: 1700,
-      },
-      {
-        index: "7",
-        value: 1400,
-      },
-      {
-        index: "8",
-        value: 1800,
-      },
+      { index: "1", value: 250 },
+      { index: "2", value: 320 },
+      { index: "3", value: 280 },
+      { index: "4", value: 360 },
+      { index: "5", value: 340 },
     ],
   },
 };
