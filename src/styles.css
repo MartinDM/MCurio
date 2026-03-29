@@ -6,6 +6,20 @@
   --mcurio-text: #2d3432;
   --mcurio-muted: #5a605e;
   --mcurio-accent: #5d5e61;
+  --mcurio-brand: #735c28;
+  --mcurio-muted-2: #767c79;
+  --mcurio-muted-3: #adb3b0;
+  --mcurio-error: #9f403d;
+  --mcurio-button-text: #f7f7fa;
+  --mcurio-border-soft: #dee4e0;
+  --mcurio-login-card-border: rgba(173, 179, 176, 0.24);
+  --mcurio-login-card-shadow: rgba(45, 52, 50, 0.06);
+  --mcurio-login-bg-overlay-1: rgba(249, 249, 247, 0.9);
+  --mcurio-login-bg-overlay-2: rgba(249, 249, 247, 0.68);
+  --mcurio-login-bg-overlay-3: rgba(249, 249, 247, 0.42);
+  --mcurio-login-bg-overlay-4: rgba(249, 249, 247, 0.08);
+  --mcurio-login-blob-top: rgba(255, 223, 158, 0.28);
+  --mcurio-login-blob-bottom: rgba(195, 224, 254, 0.32);
 }
 
 html,
@@ -156,6 +170,224 @@ body > .ant-app,
 
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.mcurio-login-page {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-image: linear-gradient(
+      90deg,
+      var(--mcurio-login-bg-overlay-1) 0%,
+      var(--mcurio-login-bg-overlay-2) 42%,
+      var(--mcurio-login-bg-overlay-3) 70%,
+      var(--mcurio-login-bg-overlay-4) 100%
+    ),
+    url("/login-background.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: var(--mcurio-text);
+  position: relative;
+  overflow: hidden;
+}
+
+.mcurio-login-blob {
+  position: fixed;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mcurio-login-blob--top {
+  top: -220px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: var(--mcurio-login-blob-top);
+  filter: blur(120px);
+}
+
+.mcurio-login-blob--bottom {
+  bottom: -220px;
+  left: -200px;
+  width: 420px;
+  height: 420px;
+  background: var(--mcurio-login-blob-bottom);
+  filter: blur(100px);
+}
+
+.mcurio-login-shell {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+
+.mcurio-login-header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.mcurio-login-brand-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mcurio-login-brand-icon {
+  font-size: 38px;
+  color: var(--mcurio-accent);
+}
+
+.mcurio-login-brand-name {
+  margin: 0;
+  font-family: "Noto Serif", serif;
+  font-style: italic;
+  font-size: 34px;
+  letter-spacing: -1px;
+  color: var(--mcurio-accent);
+}
+
+.mcurio-login-brand-subtitle {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--mcurio-muted-2);
+  letter-spacing: 0.18em;
+  font-variant: small-caps;
+}
+
+.mcurio-login-card {
+  background: var(--mcurio-surface);
+  border: 1px solid var(--mcurio-login-card-border);
+  border-radius: 6px;
+  padding: 28px;
+  box-shadow: 0 10px 26px var(--mcurio-login-card-shadow);
+}
+
+.mcurio-login-form {
+  display: grid;
+  gap: 20px;
+}
+
+.mcurio-login-form-heading {
+  border-left: 2px solid var(--mcurio-brand);
+  padding-left: 12px;
+  margin-bottom: 8px;
+}
+
+.mcurio-login-form-title {
+  margin: 0;
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+}
+
+.mcurio-login-form-subtitle {
+  margin: 6px 0 0;
+  color: var(--mcurio-muted);
+  font-size: 14px;
+}
+
+.mcurio-login-field {
+  display: grid;
+  gap: 6px;
+}
+
+.mcurio-login-field-label {
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--mcurio-muted-2);
+  font-weight: 600;
+}
+
+.mcurio-login-field-input {
+  border: none;
+  border-bottom: 1px solid var(--mcurio-muted-2);
+  background: transparent;
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--mcurio-text);
+  outline: none;
+}
+
+.mcurio-login-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mcurio-muted);
+  font-size: 12px;
+}
+
+.mcurio-login-error {
+  margin: 0;
+  color: var(--mcurio-error);
+  font-size: 13px;
+}
+
+.mcurio-login-submit {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 4px;
+  background: var(--mcurio-accent) !important;
+  color: var(--mcurio-button-text) !important;
+  padding: 12px 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mcurio-login-submit:disabled {
+  opacity: 0.8;
+}
+
+.mcurio-login-submit-icon {
+  font-size: 16px;
+}
+
+.mcurio-login-footer {
+  margin-top: 36px;
+  text-align: center;
+}
+
+.mcurio-login-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.mcurio-login-feature-item {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.mcurio-login-feature-icon {
+  color: var(--mcurio-muted-3);
+  font-size: 19px;
+}
+
+.mcurio-login-feature-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--mcurio-muted-2);
+}
+
+.mcurio-login-footer-note {
+  margin: 18px auto 0;
+  max-width: 300px;
+  font-size: 11px;
+  color: var(--mcurio-muted-2);
+  font-style: italic;
+  line-height: 1.6;
 }
 
 .mcurio-landing {
@@ -380,7 +612,7 @@ body > .ant-app,
   height: 760px;
   transform: skewX(-12deg);
   background: #f2f4f2;
-  opacity: 0.7;
+  opacity: 0.25;
   z-index: 0;
 }
 
@@ -402,36 +634,6 @@ body > .ant-app,
   margin: 8px 0 10px;
   font-size: 30px;
   font-family: "Noto Serif", serif;
-}
-
-.mcurio-landing-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 40px;
-  padding: 40px 12px;
-  border-top: 1px solid #dee4e0;
-  border-bottom: 1px solid #dee4e0;
-}
-
-.mcurio-landing-stats div {
-  text-align: center;
-}
-
-.mcurio-landing-stats span {
-  display: block;
-  font-family: "Noto Serif", serif;
-  font-size: 50px;
-  color: #735c28;
-}
-
-.mcurio-landing-stats small {
-  display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 10px;
-  color: #5a605e;
-  font-weight: 700;
 }
 
 .mcurio-landing-final-cta {
@@ -514,14 +716,8 @@ body > .ant-app,
     display: none;
   }
 
-  .mcurio-landing-grid,
-  .mcurio-landing-stats {
+  .mcurio-landing-grid {
     grid-template-columns: 1fr;
-  }
-
-  .mcurio-landing-stats {
-    gap: 18px;
-    padding: 30px 8px;
   }
 
   .mcurio-landing-mobile-nav {

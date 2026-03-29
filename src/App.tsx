@@ -34,11 +34,17 @@ import {
   ItemListPage,
   LandingPage,
   LoginPage,
+  LoanCreatePage,
+  LoanEditPage,
+  LoanListPage,
   MuseumCreatePage,
   MuseumEditPage,
   MuseumListPage,
   NoMuseumPage,
   PricingPage,
+  PropertyCreatePage,
+  PropertyEditPage,
+  PropertyListPage,
   ProfileCreatePage,
   ProfileEditPage,
   ProfileListPage,
@@ -110,6 +116,18 @@ const App = () => {
                       path="edit/:id"
                       element={<ConditionReportEditPage />}
                     />
+                  </Route>
+
+                  <Route path="/loans">
+                    <Route index element={<LoanListPage />} />
+                    <Route path="new" element={<LoanCreatePage />} />
+                    <Route path="edit/:id" element={<LoanEditPage />} />
+                  </Route>
+
+                  <Route path="/properties">
+                    <Route index element={<PropertyListPage />} />
+                    <Route path="new" element={<PropertyCreatePage />} />
+                    <Route path="edit/:id" element={<PropertyEditPage />} />
                   </Route>
 
                   <Route path="/exhibitions">

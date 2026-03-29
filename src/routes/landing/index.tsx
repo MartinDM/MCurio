@@ -24,7 +24,6 @@ export const LandingPage = () => {
 
         <div className="mcurio-landing-nav-links">
           <a href="#inventory">Inventory</a>
-          <a href="#exhibitions">Exhibitions</a>
           <a href="#contacts">Contacts</a>
         </div>
 
@@ -65,19 +64,16 @@ export const LandingPage = () => {
 
           <div className="mcurio-landing-hero-visual">
             <div className="mcurio-landing-hero-image-wrap">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuANFGnUTgR5KOoS_94kiOYiEE2LAp3xaOmqIdQ6RyfevbWxaC_4B3-tPLS3nqB4qTm9-qxpPanSN6QtDN1nGoUNo5--CM62Mlk08X7IhqaB96UY8sny02IDbmS8Fv2a7ThXwTnB1MUcfWK2r2ifsX7SdqCdTHo8iWA8QZCB7sNZRcfHF13wQOOxvbwlmurcBqAIxqZUJUwGwy2hNGIQSZdgjh-aOrUxB2A0S7kFkvYSmqPF3zO-jePO-MqX3vd_Sh1kyVgKwkXTOUay"
-                alt="Classical sculpture in a modern gallery space"
-              />
+              <img src="landing.jpg" alt="Modern gallery space" />
               <article className="mcurio-landing-hero-card">
                 <div className="mcurio-landing-hero-card-top">
                   <span className="material-symbols-outlined">verified</span>
-                  <span>Artifact ID: ARC-992-B</span>
+                  <span>Artifact ID: ARC-992</span>
                 </div>
-                <p>Hellenistic Fragment</p>
+                <p>Oil on canvas</p>
                 <div className="mcurio-landing-hero-card-meta">
                   <span>Condition: Pristine</span>
-                  <span>Vault: Wing C</span>
+                  <span>On loan from: Regional gallery</span>
                 </div>
               </article>
             </div>
@@ -113,25 +109,6 @@ export const LandingPage = () => {
           </article>
         </section>
 
-        <section className="mcurio-landing-stats" id="exhibitions">
-          <div>
-            <span>400+</span>
-            <small>Institutions</small>
-          </div>
-          <div>
-            <span>12M</span>
-            <small>Artifacts Tracked</small>
-          </div>
-          <div>
-            <span>99.9%</span>
-            <small>Data Fidelity</small>
-          </div>
-          <div>
-            <span>24/7</span>
-            <small>Global Support</small>
-          </div>
-        </section>
-
         <section className="mcurio-landing-final-cta">
           <h2>Elevate your archive to the editorial standard it deserves.</h2>
           <p>
@@ -156,10 +133,6 @@ export const LandingPage = () => {
         <a href="#inventory">
           <span className="material-symbols-outlined">inventory_2</span>
           <span>Inventory</span>
-        </a>
-        <a href="#exhibitions">
-          <span className="material-symbols-outlined">event</span>
-          <span>Exhibitions</span>
         </a>
         <a href="#contacts">
           <span className="material-symbols-outlined">contacts</span>

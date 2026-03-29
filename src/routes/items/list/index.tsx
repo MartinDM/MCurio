@@ -11,13 +11,14 @@ import {
 import { getDefaultFilter, type HttpError, useGo } from "@refinedev/core";
 
 import { SearchOutlined } from "@ant-design/icons";
-import { Input, Space, Table } from "antd";
+import { Input, Space, Table, Tag } from "antd";
 
 import { CustomAvatar, PaginationTotal, Text } from "@/components";
 type Item = {
   id: string;
   title: string;
   name?: string | null;
+  item_type?: "art_piece" | "object" | "photograph" | "document";
   avatarUrl?: string | null;
 };
 
@@ -97,7 +98,7 @@ export const ItemListPage = ({ children }: React.PropsWithChildren) => {
           <Table.Column<Item>
             dataIndex="title"
             title="Item title"
-            defaultFilteredValue={getDefaultFilter("id", filters)}
+            defaultFilteredValue={getDefaultFilter("name", filters)}
             filterIcon={<SearchOutlined />}
             filterDropdown={(props) => (
               <FilterDropdown {...props}>
@@ -121,6 +122,17 @@ export const ItemListPage = ({ children }: React.PropsWithChildren) => {
                   </Text>
                 </Space>
               );
+            }}
+          />
+          <Table.Column<Item>
+            dataIndex="item_type"
+            title="Type"
+            render={(value?: Item["item_type"]) => {
+              if (!value) {
+                return <Tag>art_piece</Tag>;
+              }
+
+              return <Tag>{value}</Tag>;
             }}
           />
           <Table.Column<Item>

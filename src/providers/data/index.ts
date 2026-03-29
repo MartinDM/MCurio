@@ -6,6 +6,10 @@ const museumScopedResources = new Set([
   "contacts",
   "exhibitions",
   "condition_reports",
+  "loans",
+  "loan_items",
+  "properties",
+  "item_property_values",
 ]);
 
 const getCurrentMuseumId = async () => {

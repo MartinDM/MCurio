@@ -5,9 +5,11 @@ import { ImProfile } from "react-icons/im";
 import { BsPersonRaisedHand } from "react-icons/bs";
 
 import {
+  ApartmentOutlined,
   IdcardOutlined,
   DashboardOutlined,
   FileSearchOutlined,
+  FileTextOutlined,
   TagsOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -49,6 +51,26 @@ export const resources: IResourceItem[] = [
     meta: {
       label: "Condition Reports",
       icon: <FileSearchOutlined />,
+    },
+  },
+  {
+    name: "loans",
+    list: "/loans",
+    create: "/loans/new",
+    edit: "/loans/edit/:id",
+    meta: {
+      label: "Loans",
+      icon: <FileTextOutlined />,
+    },
+  },
+  {
+    name: "properties",
+    list: "/properties",
+    create: "/properties/new",
+    edit: "/properties/edit/:id",
+    meta: {
+      label: "Properties",
+      icon: <ApartmentOutlined />,
     },
   },
   {
