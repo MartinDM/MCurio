@@ -25,6 +25,8 @@ export const LandingPage = () => {
         <div className="mcurio-landing-nav-links">
           <a href="#inventory">Inventory</a>
           <a href="#contacts">Contacts</a>
+          <a href="#exhibitions">Exhibitions</a>
+          <a href="#access">Access</a>
         </div>
 
         <div className="mcurio-landing-nav-cta">
@@ -107,6 +109,50 @@ export const LandingPage = () => {
               built for museum operations.
             </p>
           </article>
+
+          <article className="mcurio-landing-card" id="exhibitions">
+            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
+              Module 03
+            </p>
+            <h3>Exhibitions</h3>
+            <p className="mcurio-subtle">
+              Plan and organise exhibitions end-to-end — from object selection
+              and layout to scheduling and public-facing details.
+            </p>
+          </article>
+
+          <article className="mcurio-landing-card" id="access">
+            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
+              Module 04
+            </p>
+            <h3>Access &amp; Roles</h3>
+            <p className="mcurio-subtle">
+              Define granular permissions across your institution so the right
+              people have the right level of access to collections data.
+            </p>
+          </article>
+
+          <article className="mcurio-landing-card">
+            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
+              Module 05
+            </p>
+            <h3>Meta Tagging</h3>
+            <p className="mcurio-subtle">
+              Enrich records with structured tags — medium, period, culture,
+              subject — to power search, filtering, and future discovery.
+            </p>
+          </article>
+
+          <article className="mcurio-landing-card">
+            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
+              Module 06
+            </p>
+            <h3>Inspection Reports</h3>
+            <p className="mcurio-subtle">
+              Log condition assessments and flag issues at any point in an
+              object's lifecycle, from acquisition through to loan and return.
+            </p>
+          </article>
         </section>
 
         <section className="mcurio-landing-final-cta">
@@ -137,6 +183,10 @@ export const LandingPage = () => {
         <a href="#contacts">
           <span className="material-symbols-outlined">contacts</span>
           <span>Contacts</span>
+        </a>
+        <a href="#exhibitions">
+          <span className="material-symbols-outlined">museum</span>
+          <span>Exhibitions</span>
         </a>
         <Link to="/pricing">
           <span className="material-symbols-outlined">sell</span>
