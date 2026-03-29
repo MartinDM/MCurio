@@ -89,9 +89,9 @@ export const LandingPage = () => {
           id="inventory"
         >
           <article className="mcurio-landing-card">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 01
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              inventory_2
+            </span>
             <h3>Inventory</h3>
             <p className="mcurio-subtle">
               Manage high-density metadata with editorial precision, condition
@@ -100,9 +100,9 @@ export const LandingPage = () => {
           </article>
 
           <article className="mcurio-landing-card" id="contacts">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 02
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              contacts
+            </span>
             <h3>Industry Contacts</h3>
             <p className="mcurio-subtle">
               Coordinate curators, lenders, and partners with a shared directory
@@ -111,9 +111,9 @@ export const LandingPage = () => {
           </article>
 
           <article className="mcurio-landing-card" id="exhibitions">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 03
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              museum
+            </span>
             <h3>Exhibitions</h3>
             <p className="mcurio-subtle">
               Plan and organise exhibitions end-to-end — from object selection
@@ -122,9 +122,9 @@ export const LandingPage = () => {
           </article>
 
           <article className="mcurio-landing-card" id="access">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 04
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              manage_accounts
+            </span>
             <h3>Access &amp; Roles</h3>
             <p className="mcurio-subtle">
               Define granular permissions across your institution so the right
@@ -133,9 +133,9 @@ export const LandingPage = () => {
           </article>
 
           <article className="mcurio-landing-card">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 05
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              label
+            </span>
             <h3>Meta Tagging</h3>
             <p className="mcurio-subtle">
               Enrich records with structured tags — medium, period, culture,
@@ -144,9 +144,9 @@ export const LandingPage = () => {
           </article>
 
           <article className="mcurio-landing-card">
-            <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
-              Module 06
-            </p>
+            <span className="material-symbols-outlined mcurio-landing-card-icon">
+              fact_check
+            </span>
             <h3>Inspection Reports</h3>
             <p className="mcurio-subtle">
               Log condition assessments and flag issues at any point in an
