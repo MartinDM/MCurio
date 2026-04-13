@@ -10,16 +10,20 @@ import {
   DashboardOutlined,
   FileSearchOutlined,
   FileTextOutlined,
+  ImportOutlined,
   TagsOutlined,
+  TagOutlined,
   UserOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
-export const resources: IResourceItem[] = [
+// Base resources available to all plans
+export const getBaseResources = (): IResourceItem[] => [
   {
     name: "dashboard",
     list: "/dashboard",
     meta: {
-      label: "Dashboard",
+      label: "Museum Management",
       icon: <DashboardOutlined />,
     },
   },
@@ -44,6 +48,40 @@ export const resources: IResourceItem[] = [
     },
   },
   {
+    name: "locations",
+    list: "/locations",
+    create: "/locations/new",
+    edit: "/locations/edit/:id",
+    meta: {
+      label: "Locations",
+      icon: <ApartmentOutlined />,
+    },
+  },
+  {
+    name: "tags",
+    list: "/tags",
+    create: "/tags/new",
+    edit: "/tags/edit/:id",
+    meta: {
+      label: "Tags",
+      icon: <TagOutlined />,
+    },
+  },
+  {
+    name: "properties",
+    list: "/properties",
+    create: "/properties/new",
+    edit: "/properties/edit/:id",
+    meta: {
+      label: "Properties",
+      icon: <ApartmentOutlined />,
+    },
+  },
+];
+
+// Museum-only resources
+export const getMuseumResources = (): IResourceItem[] => [
+  {
     name: "condition_reports",
     list: "/condition-reports",
     create: "/condition-reports/new",
@@ -64,16 +102,6 @@ export const resources: IResourceItem[] = [
     },
   },
   {
-    name: "properties",
-    list: "/properties",
-    create: "/properties/new",
-    edit: "/properties/edit/:id",
-    meta: {
-      label: "Properties",
-      icon: <ApartmentOutlined />,
-    },
-  },
-  {
     name: "exhibitions",
     list: "/exhibitions",
     create: "/exhibitions/new",
@@ -83,6 +111,10 @@ export const resources: IResourceItem[] = [
       icon: <HiCollection />,
     },
   },
+];
+
+// Admin resources (always available)
+export const getAdminResources = (): IResourceItem[] => [
   {
     name: "museums",
     list: "/museums",
@@ -113,4 +145,47 @@ export const resources: IResourceItem[] = [
       icon: <ImProfile />,
     },
   },
+  {
+    name: "roles",
+    list: "/roles",
+    create: "/roles/new",
+    edit: "/roles/edit/:id",
+    meta: {
+      label: "Roles",
+      icon: <IdcardOutlined />,
+    },
+  },
+  {
+    name: "imports",
+    list: "/imports",
+    meta: {
+      label: "Imports",
+      icon: <ImportOutlined />,
+    },
+  },
+  {
+    name: "settings",
+    list: "/settings",
+    meta: {
+      label: "Settings",
+      icon: <SettingOutlined />,
+    },
+  },
 ];
+
+// Get resources based on plan type
+export const getResourcesForPlan = (
+  planType: "personal" | "museum" = "personal",
+): IResourceItem[] => {
+  const baseResources = getBaseResources();
+  const adminResources = getAdminResources();
+
+  if (planType === "museum") {
+    return [...baseResources, ...getMuseumResources(), ...adminResources];
+  }
+
+  return [...baseResources, ...adminResources];
+};
+
+// Legacy export for backward compatibility
+export const resources: IResourceItem[] = getResourcesForPlan("museum");

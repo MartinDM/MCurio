@@ -1,11 +1,13 @@
 import { useModalForm } from "@refinedev/antd";
 import { useGo } from "@refinedev/core";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 import { DatePicker, Form, Input, Modal, Select } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 
 export const ExhibitionsCreateModal = () => {
   const go = useGo();
+  const { completeStep } = useOnboarding();
 
   const goToListPage = () => {
     go({
@@ -17,13 +19,19 @@ export const ExhibitionsCreateModal = () => {
     });
   };
 
+  const handleSuccess = () => {
+    // Complete onboarding step when first exhibition is created
+    completeStep("create_exhibition");
+    goToListPage();
+  };
+
   const { formProps, modalProps } = useModalForm({
     action: "create",
     defaultVisible: true,
     resource: "exhibitions",
     redirect: false,
     mutationMode: "pessimistic",
-    onMutationSuccess: goToListPage,
+    onMutationSuccess: handleSuccess,
   });
 
   return (

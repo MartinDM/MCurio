@@ -34,8 +34,11 @@ export const LandingPage = () => {
             Login
           </Link>
           <Link to="/pricing">
-            <Button type="primary" className="mcurio-landing-nav-primary-btn">
-              Request Access
+            <Button
+              type="primary"
+              className="mcurio-landing-btn mcurio-landing-btn--nav-primary"
+            >
+              View Pricing
             </Button>
           </Link>
         </div>
@@ -44,22 +47,23 @@ export const LandingPage = () => {
       <main className="mcurio-landing-main">
         <section className="mcurio-landing-hero">
           <div className="mcurio-landing-hero-copy">
-            <p className="mcurio-landing-eyebrow">The Digital Curator Elite</p>
+            <p className="mcurio-landing-eyebrow">Your curation hub</p>
             <h1 className="mcurio-landing-title">
-              Preserving History through <i>Modern Precision.</i>
+              From objects to exhibitions <i>in one place</i>
             </h1>
             <p className="mcurio-subtle mcurio-landing-description">
-              MCurio is a sophisticated archival ecosystem designed for modern
-              institutions. Manage provenance, schedule exhibitions, and
-              collaborate across departments with intuitive workflows.
+              MCurio is an archival system designed for modern institutions who
+              want flexibility and rich tagging and grouping of their inventory.
+              Manage provenance, create a story for each piece, and curate
+              exhibitions.
             </p>
             <Link to="/pricing">
               <Button
                 type="primary"
                 size="large"
-                className="mcurio-landing-primary-btn"
+                className="mcurio-landing-btn mcurio-landing-btn--primary"
               >
-                Request Access
+                Get Started Free
               </Button>
             </Link>
           </div>
@@ -95,7 +99,9 @@ export const LandingPage = () => {
             <h3>Inventory</h3>
             <p className="mcurio-subtle">
               Manage high-density metadata with editorial precision, condition
-              reporting, and provenance tracking in one clear workspace.
+              reporting, and provenance tracking in one clear workspace. Prepare
+              exhibition content per item with markdown and export it when
+              creating your physical exhibition.
             </p>
           </article>
 
@@ -159,13 +165,14 @@ export const LandingPage = () => {
           <h2>Elevate your archive to the editorial standard it deserves.</h2>
           <p>
             Join forward-thinking institutions defining the future of digital
-            preservation.
+            preservation. Start a trial, and let us know how we can support your
+            collection's unique needs.
           </p>
           <Link to="/pricing">
             <Button
               type="primary"
               size="large"
-              className="mcurio-landing-primary-btn"
+              className="mcurio-landing-btn mcurio-landing-btn--primary"
             >
               Request Access
             </Button>

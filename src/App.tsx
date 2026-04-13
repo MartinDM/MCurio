@@ -5,14 +5,20 @@ import { Authenticated, ErrorComponent, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import routerProvider, {
   CatchAllNavigate,
-  DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 
 import { App as AntdApp, ConfigProvider } from "antd";
 
-import { Layout } from "@/components";
+import {
+  CookieBanner,
+  Layout,
+  CustomDocumentTitleHandler,
+  PlanRestrictedRoute,
+} from "@/components";
+import { DynamicResourceProvider } from "@/components/DynamicResourceProvider";
+import { AuthenticationWrapper } from "@/components/AuthenticationWrapper";
 import { resources } from "@/config/resources";
 import { authProvider, dataProvider, liveProvider } from "@/providers";
 import {
@@ -22,10 +28,16 @@ import {
   ContactCreatePage,
   ContactEditPage,
   ContactListPage,
+  ContactDetailPage,
+  LocationCreatePage,
+  LocationEditPage,
+  LocationListPage,
   DashboardPage,
+  CmsEnginePage,
   EmployeeCreatePage,
   EmployeeEditPage,
   EmployeeListPage,
+  EthicsAndProvenancePage,
   ExhibitionCreatePage,
   ExhibitionEditPage,
   ExhibitionsListPage,
@@ -34,6 +46,7 @@ import {
   ItemListPage,
   LandingPage,
   LoginPage,
+  SignupPage,
   LoanCreatePage,
   LoanEditPage,
   LoanListPage,
@@ -41,13 +54,30 @@ import {
   MuseumEditPage,
   MuseumListPage,
   NoMuseumPage,
+  OnboardingFlow,
+  PhilosophyPage,
   PricingPage,
+  PressRoomPage,
+  PrivacyPage,
   PropertyCreatePage,
   PropertyEditPage,
   PropertyListPage,
   ProfileCreatePage,
   ProfileEditPage,
   ProfileListPage,
+  ProfileDetailPage,
+  RoleCreatePage,
+  RoleEditPage,
+  RoleListPage,
+  RestorationLogsPage,
+  SecurityPage,
+  SpatialPlanningPage,
+  TagsList,
+  TagsCreate,
+  TagsEdit,
+  TermsPage,
+  AccountSettingsPage,
+  InvitationAcceptPage,
 } from "@/routes";
 
 const App = () => {
@@ -64,35 +94,63 @@ const App = () => {
       >
         <AntdApp>
           <DevtoolsProvider>
-            <Refine
-              Title={() => <>MCurio | Museum CMS</>}
-              routerProvider={routerProvider}
-              dataProvider={dataProvider}
-              liveProvider={liveProvider}
-              notificationProvider={useNotificationProvider}
-              authProvider={authProvider}
-              resources={resources}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-                liveMode: "auto",
-                useNewQueryKeys: true,
+            <DynamicResourceProvider
+              refineProps={{
+                Title: ({ collapsed }: { collapsed: boolean }) => (
+                  <div>MCurio</div>
+                ),
+                routerProvider,
+                dataProvider,
+                liveProvider,
+                notificationProvider: useNotificationProvider,
+                authProvider,
+                options: {
+                  syncWithLocation: true,
+                  warnWhenUnsavedChanges: true,
+                  liveMode: "auto",
+                  useNewQueryKeys: true,
+                },
               }}
             >
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/pricing" element={<PricingPage />} />
+                <Route
+                  path="/platform/cms-engine"
+                  element={<CmsEnginePage />}
+                />
+                <Route
+                  path="/platform/spatial-planning"
+                  element={<SpatialPlanningPage />}
+                />
+                <Route
+                  path="/platform/restoration-logs"
+                  element={<RestorationLogsPage />}
+                />
+                <Route
+                  path="/company/our-philosophy"
+                  element={<PhilosophyPage />}
+                />
+                <Route
+                  path="/company/ethics-and-provenance"
+                  element={<EthicsAndProvenancePage />}
+                />
+                <Route path="/company/press-room" element={<PressRoomPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/security" element={<SecurityPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route
+                  path="/invitation/accept"
+                  element={<InvitationAcceptPage />}
+                />
 
                 <Route
                   element={
-                    <Authenticated
-                      key="authenticated-layout"
-                      fallback={<CatchAllNavigate to="/login" />}
-                    >
+                    <AuthenticationWrapper>
                       <Layout>
                         <Outlet />
                       </Layout>
-                    </Authenticated>
+                    </AuthenticationWrapper>
                   }
                 >
                   <Route path="/dashboard" element={<DashboardPage />} />
@@ -107,21 +165,91 @@ const App = () => {
                     <Route index element={<ContactListPage />} />
                     <Route path="new" element={<ContactCreatePage />} />
                     <Route path="edit/:id" element={<ContactEditPage />} />
+                    <Route path="view/:id" element={<ContactDetailPage />} />
+                  </Route>
+
+                  <Route path="/locations">
+                    <Route index element={<LocationListPage />} />
+                    <Route path="new" element={<LocationCreatePage />} />
+                    <Route path="edit/:id" element={<LocationEditPage />} />
+                  </Route>
+
+                  <Route path="/tags">
+                    <Route index element={<TagsList />} />
+                    <Route path="new" element={<TagsCreate />} />
+                    <Route path="edit/:id" element={<TagsEdit />} />
                   </Route>
 
                   <Route path="/condition-reports">
-                    <Route index element={<ConditionReportListPage />} />
-                    <Route path="new" element={<ConditionReportCreatePage />} />
+                    <Route
+                      index
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="conditionReports"
+                          featureName="Condition Reports"
+                        >
+                          <ConditionReportListPage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
+                    <Route
+                      path="new"
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="conditionReports"
+                          featureName="Condition Reports"
+                        >
+                          <ConditionReportCreatePage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
                     <Route
                       path="edit/:id"
-                      element={<ConditionReportEditPage />}
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="conditionReports"
+                          featureName="Condition Reports"
+                        >
+                          <ConditionReportEditPage />
+                        </PlanRestrictedRoute>
+                      }
                     />
                   </Route>
 
                   <Route path="/loans">
-                    <Route index element={<LoanListPage />} />
-                    <Route path="new" element={<LoanCreatePage />} />
-                    <Route path="edit/:id" element={<LoanEditPage />} />
+                    <Route
+                      index
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="loans"
+                          featureName="Loans"
+                        >
+                          <LoanListPage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
+                    <Route
+                      path="new"
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="loans"
+                          featureName="Loans"
+                        >
+                          <LoanCreatePage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="loans"
+                          featureName="Loans"
+                        >
+                          <LoanEditPage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
                   </Route>
 
                   <Route path="/properties">
@@ -131,9 +259,39 @@ const App = () => {
                   </Route>
 
                   <Route path="/exhibitions">
-                    <Route index element={<ExhibitionsListPage />} />
-                    <Route path="new" element={<ExhibitionCreatePage />} />
-                    <Route path="edit/:id" element={<ExhibitionEditPage />} />
+                    <Route
+                      index
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="exhibitions"
+                          featureName="Exhibitions"
+                        >
+                          <ExhibitionsListPage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
+                    <Route
+                      path="new"
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="exhibitions"
+                          featureName="Exhibitions"
+                        >
+                          <ExhibitionCreatePage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <PlanRestrictedRoute
+                          requiredFeature="exhibitions"
+                          featureName="Exhibitions"
+                        >
+                          <ExhibitionEditPage />
+                        </PlanRestrictedRoute>
+                      }
+                    />
                   </Route>
 
                   <Route path="/museums">
@@ -152,10 +310,24 @@ const App = () => {
                     <Route index element={<ProfileListPage />} />
                     <Route path="new" element={<ProfileCreatePage />} />
                     <Route path="edit/:id" element={<ProfileEditPage />} />
+                    <Route path="view/:id" element={<ProfileDetailPage />} />
                   </Route>
+
+                  <Route path="/roles">
+                    <Route index element={<RoleListPage />} />
+                    <Route path="new" element={<RoleCreatePage />} />
+                    <Route path="edit/:id" element={<RoleEditPage />} />
+                  </Route>
+
+                  <Route path="/settings" element={<AccountSettingsPage />} />
 
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
+
+                {/* Temporarily moved login outside authentication check */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/onboarding" element={<OnboardingFlow />} />
 
                 <Route
                   element={
@@ -167,14 +339,15 @@ const App = () => {
                     </Authenticated>
                   }
                 >
-                  <Route path="/login" element={<LoginPage />} />
+                  {/* Empty route for auth redirect handling */}
                 </Route>
 
                 <Route path="/no-museum" element={<NoMuseumPage />} />
               </Routes>
+              <CookieBanner />
               <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
+              <CustomDocumentTitleHandler />
+            </DynamicResourceProvider>
             <DevtoolsPanel />
           </DevtoolsProvider>
         </AntdApp>

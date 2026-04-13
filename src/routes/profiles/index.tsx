@@ -14,12 +14,24 @@ import { Form, Input, Select, Space, Table } from "antd";
 type Profile = {
   id: string;
   museum_id?: string | null;
-  is_admin?: boolean;
+  role?: string | null;
   created_at?: string;
 };
 
 export const ProfileListPage = () => {
   const { tableProps } = useTable<Profile>({ resource: "profiles" });
+  const { selectProps: roleSelectProps } = useSelect({
+    resource: "roles",
+    optionLabel: "name",
+    optionValue: "id",
+  });
+
+  const roleNameById = new Map(
+    (roleSelectProps.options ?? []).map((option) => [
+      String(option.value),
+      String(option.label),
+    ]),
+  );
 
   return (
     <List headerButtons={<CreateButton />}>
@@ -27,9 +39,9 @@ export const ProfileListPage = () => {
         <Table.Column<Profile> dataIndex="id" title="User ID" />
         <Table.Column<Profile> dataIndex="museum_id" title="Museum ID" />
         <Table.Column<Profile>
-          dataIndex="is_admin"
-          title="Admin"
-          render={(value) => (value ? "Yes" : "No")}
+          dataIndex="role"
+          title="Role"
+          render={(value) => value || "Unassigned"}
         />
         <Table.Column<Profile>
           title="Actions"
@@ -52,6 +64,14 @@ const ProfileFields = () => {
     optionValue: "id",
   });
 
+  const roleSelectProps = {
+    options: [
+      { value: "admin", label: "Admin" },
+      { value: "editor", label: "Editor" },
+      { value: "viewer", label: "Viewer" },
+    ],
+  };
+
   return (
     <>
       <Form.Item
@@ -64,19 +84,8 @@ const ProfileFields = () => {
       <Form.Item label="Museum" name="museum_id">
         <Select allowClear placeholder="Select museum" {...museumSelectProps} />
       </Form.Item>
-      <Form.Item
-        label="Role"
-        name="is_admin"
-        valuePropName="value"
-        getValueProps={(value) => ({ value: !!value })}
-        normalize={(value) => !!value}
-      >
-        <Select
-          options={[
-            { label: "Standard User", value: false },
-            { label: "Admin", value: true },
-          ]}
-        />
+      <Form.Item label="Role" name="role">
+        <Select allowClear placeholder="Select role" {...roleSelectProps} />
       </Form.Item>
     </>
   );
@@ -97,6 +106,7 @@ export const ProfileCreatePage = () => {
   );
 };
 
+export * from "./view";
 export const ProfileEditPage = () => {
   const { formProps, saveButtonProps } = useForm({
     resource: "profiles",
@@ -111,3 +121,5 @@ export const ProfileEditPage = () => {
     </Edit>
   );
 };
+
+export * from "./view";

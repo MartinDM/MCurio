@@ -1,16 +1,16 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
 
-import { useGetIdentity, useLogout } from "@refinedev/core";
-import { Button, Divider, Layout, Menu, theme } from "antd";
+import { useGetIdentity, useLogout, useResource } from "@refinedev/core";
+import { Button, Divider, Layout, Menu, theme, Tag } from "antd";
 import {
   LogoutOutlined,
   PushpinFilled,
   PushpinOutlined,
 } from "@ant-design/icons";
 
-import { resources } from "@/config/resources";
 import { supabase } from "@/lib/supabase";
+import { useTrialStatus } from "@/hooks/useTrialStatus";
 
 type SiderProps = {
   Title?: React.ComponentType<{ collapsed: boolean }>;
@@ -39,33 +39,40 @@ export const Sider = ({ Title }: SiderProps) => {
   const { mutate: logout } = useLogout();
   const { data: identity } = useGetIdentity<Identity>();
 
+  // Get dynamic resources from Refine context
+  const { resources: resourceDefinitions } = useResource();
+
+  // Trial status for countdown
+  const { trialStatus, loading: trialLoading } = useTrialStatus();
+
   const [pinnedItems, setPinnedItems] = React.useState<string[]>([]);
   const [pinsLoaded, setPinsLoaded] = React.useState(false);
 
   const menuResources = React.useMemo(
     () =>
-      resources.filter(
-        (resource) => typeof resource.list === "string" && resource.list,
+      resourceDefinitions.filter(
+        (resource: any) => typeof resource.list === "string" && resource.list,
       ),
-    [],
+    [resourceDefinitions],
   );
 
   const dashboardResource = React.useMemo(
-    () => menuResources.find((resource) => resource.name === "dashboard"),
+    () => menuResources.find((resource: any) => resource.name === "dashboard"),
     [menuResources],
   );
 
   const otherResources = React.useMemo(
-    () => menuResources.filter((resource) => resource.name !== "dashboard"),
+    () =>
+      menuResources.filter((resource: any) => resource.name !== "dashboard"),
     [menuResources],
   );
 
-  const pinnedResources = otherResources.filter((resource) =>
+  const pinnedResources = otherResources.filter((resource: any) =>
     pinnedItems.includes(resource.name),
   );
 
   const unpinnedResources = otherResources.filter(
-    (resource) => !pinnedItems.includes(resource.name),
+    (resource: any) => !pinnedItems.includes(resource.name),
   );
 
   const orderedResources = [
@@ -92,7 +99,9 @@ export const Sider = ({ Title }: SiderProps) => {
           const parsedPins = JSON.parse(cachedPins) as string[];
           setPinnedItems(
             parsedPins.filter((resourceName) =>
-              otherResources.some((resource) => resource.name === resourceName),
+              otherResources.some(
+                (resource: any) => resource.name === resourceName,
+              ),
             ),
           );
         } catch {
@@ -115,7 +124,9 @@ export const Sider = ({ Title }: SiderProps) => {
       const loadedPins = ((data ?? []) as UserMenuPin[])
         .map((item) => item.resource_name)
         .filter((resourceName) =>
-          otherResources.some((resource) => resource.name === resourceName),
+          otherResources.some(
+            (resource: any) => resource.name === resourceName,
+          ),
         );
 
       setPinnedItems(loadedPins);
@@ -199,6 +210,34 @@ export const Sider = ({ Title }: SiderProps) => {
       <div className="mcurio-custom-sider__title">
         {Title ? <Title collapsed={false} /> : null}
       </div>
+
+      {/* Trial Countdown */}
+      {!trialLoading &&
+        trialStatus &&
+        (trialStatus.isOnTrial || trialStatus.isExpired) && (
+          <div
+            style={{ padding: "8px 16px", borderBottom: "1px solid #f0f0f0" }}
+          >
+            {trialStatus.isExpired ? (
+              <Tag color="red" style={{ width: "100%", textAlign: "center" }}>
+                Trial Expired
+              </Tag>
+            ) : trialStatus.isNearExpiration ? (
+              <Tag
+                color={trialStatus.daysRemaining <= 1 ? "red" : "orange"}
+                style={{ width: "100%", textAlign: "center" }}
+              >
+                {trialStatus.daysRemaining} day
+                {trialStatus.daysRemaining === 1 ? "" : "s"} left
+              </Tag>
+            ) : (
+              <Tag color="blue" style={{ width: "100%", textAlign: "center" }}>
+                {trialStatus.daysRemaining} day
+                {trialStatus.daysRemaining === 1 ? "" : "s"} left
+              </Tag>
+            )}
+          </div>
+        )}
 
       <div className="mcurio-custom-sider__body">
         <Menu

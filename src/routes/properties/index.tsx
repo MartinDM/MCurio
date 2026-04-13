@@ -8,7 +8,8 @@ import {
   useForm,
   useTable,
 } from "@refinedev/antd";
-import { Form, Input, Select, Space, Table, Tag } from "antd";
+import { Form, Input, Select, Space, Table, Tag, Tooltip } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 type Property = {
   id: string;
@@ -45,7 +46,18 @@ const PropertyFields = () => {
         <Select options={PROPERTY_TYPE_OPTIONS} placeholder="Select type" />
       </Form.Item>
 
-      <Form.Item label="Sort order" name="sort_order" initialValue={0}>
+      <Form.Item
+        label={
+          <span>
+            Sort order{" "}
+            <Tooltip title="Controls the display order when adding properties to items. Lower numbers appear first. Existing properties with the same or higher numbers will be shifted down.">
+              <InfoCircleOutlined style={{ color: "#8c8c8c" }} />
+            </Tooltip>
+          </span>
+        }
+        name="sort_order"
+        initialValue={0}
+      >
         <Input type="number" min={0} />
       </Form.Item>
 

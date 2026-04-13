@@ -261,3 +261,13 @@ ON CONFLICT (id) DO NOTHING;
 UPDATE public.profiles
 SET museum_id = '11111111-1111-4111-8111-111111111111'
 WHERE museum_id IS NULL;
+
+-- NOTE: role_id column was removed in roles refactor migration
+-- Commenting out until seed is updated for new schema
+-- UPDATE public.profiles p
+-- SET role_id = r.id
+-- FROM public.roles r
+-- WHERE p.museum_id IS NOT NULL
+--   AND p.role_id IS NULL
+--   AND r.museum_id = p.museum_id
+--   AND lower(r.name) = CASE WHEN p.is_admin THEN 'admin' ELSE 'member' END;

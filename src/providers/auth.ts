@@ -1,6 +1,23 @@
 import { supabase } from "@/lib/supabase";
 import type { AuthProvider } from "@refinedev/core";
 
+const isAdminProfile = async (userId: string) => {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("museum_id, role")
+    .eq("id", userId)
+    .single();
+
+  if (!profile) {
+    return { museumId: null as string | null, isAdmin: false };
+  }
+
+  return {
+    museumId: profile.museum_id ?? null,
+    isAdmin: profile.role === "admin",
+  };
+};
+
 export const authProvider: AuthProvider = {
   login: async ({ email, password }: { email: string; password: string }) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -23,14 +40,10 @@ export const authProvider: AuthProvider = {
       return { authenticated: false, redirectTo: "/login", logout: true };
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("museum_id, is_admin")
-      .eq("id", data.session.user.id)
-      .single();
+    const { museumId, isAdmin } = await isAdminProfile(data.session.user.id);
 
-    if (!profile?.museum_id && !profile?.is_admin) {
-      return { authenticated: false, redirectTo: "/no-museum" };
+    if (!museumId && !isAdmin) {
+      return { authenticated: false, redirectTo: "/onboarding" };
     }
 
     return { authenticated: true };
@@ -38,12 +51,9 @@ export const authProvider: AuthProvider = {
   getPermissions: async () => {
     const { data } = await supabase.auth.getUser();
     if (!data.user) return null;
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", data.user.id)
-      .single();
-    return profile?.is_admin ? "admin" : "user";
+
+    const { isAdmin } = await isAdminProfile(data.user.id);
+    return isAdmin ? "admin" : "user";
   },
   getIdentity: async () => {
     const { data } = await supabase.auth.getUser();

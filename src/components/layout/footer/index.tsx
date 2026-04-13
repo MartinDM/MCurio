@@ -1,9 +1,31 @@
 import { theme } from "antd";
+import { Link } from "react-router";
 
 const { useToken } = theme;
 
 export const Footer = () => {
   const { token } = useToken();
+
+  const platformLinks = [
+    { label: "CMS Engine", to: "/platform/cms-engine" },
+    { label: "Spatial Planning", to: "/platform/spatial-planning" },
+    { label: "Restoration Logs", to: "/platform/restoration-logs" },
+  ];
+
+  const companyLinks = [
+    { label: "Our Philosophy", to: "/company/our-philosophy" },
+    {
+      label: "Ethics & Provenance",
+      to: "/company/ethics-and-provenance",
+    },
+    { label: "Press Room", to: "/company/press-room" },
+  ];
+
+  const legalLinks = [
+    { label: "Privacy", to: "/privacy" },
+    { label: "Security", to: "/security" },
+    { label: "Terms of Service", to: "/terms" },
+  ];
 
   return (
     <footer className="mcurio-footer" style={{ color: token.colorText }}>
@@ -27,15 +49,13 @@ export const Footer = () => {
           >
             Platform
           </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            CMS Engine
-          </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            Spatial Planning
-          </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            Restoration Logs
-          </p>
+          <div className="mcurio-footer-link-list">
+            {platformLinks.map((link) => (
+              <Link key={link.to} to={link.to} className="mcurio-footer-link">
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
         <div>
           <p
@@ -49,15 +69,13 @@ export const Footer = () => {
           >
             Company
           </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            Our Philosophy
-          </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            Ethics &amp; Provenance
-          </p>
-          <p className="mcurio-subtle" style={{ margin: "6px 0" }}>
-            Press Room
-          </p>
+          <div className="mcurio-footer-link-list">
+            {companyLinks.map((link) => (
+              <Link key={link.to} to={link.to} className="mcurio-footer-link">
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
       <div
@@ -73,10 +91,14 @@ export const Footer = () => {
         <p className="mcurio-subtle" style={{ margin: 0, fontSize: 12 }}>
           © 2024 MCurio Institutional Systems. All Rights Reserved.
         </p>
-        <div style={{ display: "flex", gap: 16, fontSize: 12 }}>
-          <span className="mcurio-subtle">Privacy</span>
-          <span className="mcurio-subtle">Security</span>
-          <span className="mcurio-subtle">System Integrity</span>
+        <div
+          style={{ display: "flex", gap: 16, fontSize: 12, flexWrap: "wrap" }}
+        >
+          {legalLinks.map((link) => (
+            <Link key={link.to} to={link.to} className="mcurio-footer-link">
+              {link.label}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

@@ -1,15 +1,20 @@
 import { supabase } from "@/lib/supabase";
+import { dataProvider as supabaseDataProvider } from "@refinedev/supabase";
 import type { DataProvider, LiveProvider } from "@refinedev/core";
 
 const museumScopedResources = new Set([
   "items",
   "contacts",
+  "locations",
   "exhibitions",
+  "exhibition_items",
+  "item_movements",
   "condition_reports",
   "loans",
   "loan_items",
   "properties",
   "item_property_values",
+  "roles",
 ]);
 
 const getCurrentMuseumId = async () => {
@@ -26,30 +31,12 @@ const getCurrentMuseumId = async () => {
   return profile?.museum_id ?? null;
 };
 
+// Get the official Supabase data provider
+const baseDataProvider = supabaseDataProvider(supabase);
+
+// Wrap it with custom museum scoping logic
 export const dataProvider: DataProvider = {
-  getList: async ({ resource, pagination }) => {
-    const current = pagination?.current ?? 1;
-    const pageSize = pagination?.pageSize ?? 10;
-    const from = (current - 1) * pageSize;
-    const to = from + pageSize - 1;
-
-    const { data, error, count } = await supabase
-      .from(resource)
-      .select("*", { count: "exact" })
-      .range(from, to);
-
-    if (error) throw error;
-    return { data: data ?? [], total: count ?? 0 };
-  },
-  getOne: async ({ resource, id }) => {
-    const { data, error } = await supabase
-      .from(resource)
-      .select("*")
-      .eq("id", id)
-      .single();
-    if (error) throw error;
-    return { data };
-  },
+  ...baseDataProvider,
   create: async ({ resource, variables }) => {
     const payload = { ...(variables as Record<string, unknown>) };
 
@@ -60,35 +47,8 @@ export const dataProvider: DataProvider = {
       }
     }
 
-    const { data, error } = await supabase
-      .from(resource)
-      .insert(payload)
-      .select("*")
-      .single();
-    if (error) throw error;
-    return { data };
+    return baseDataProvider.create({ resource, variables: payload });
   },
-  update: async ({ resource, id, variables }) => {
-    const { data, error } = await supabase
-      .from(resource)
-      .update(variables as object)
-      .eq("id", id)
-      .select("*")
-      .single();
-    if (error) throw error;
-    return { data };
-  },
-  deleteOne: async ({ resource, id }) => {
-    const { data, error } = await supabase
-      .from(resource)
-      .delete()
-      .eq("id", id)
-      .select("*")
-      .single();
-    if (error) throw error;
-    return { data };
-  },
-  getApiUrl: () => import.meta.env.VITE_SUPABASE_URL ?? "",
 };
 
 export const liveProvider: LiveProvider = {

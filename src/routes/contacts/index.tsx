@@ -9,6 +9,7 @@ import {
   useTable,
 } from "@refinedev/antd";
 import { Form, Input, Select, Space, Table } from "antd";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 type Contact = {
   id: string;
@@ -56,9 +57,15 @@ export const ContactListPage = () => {
 };
 
 export const ContactCreatePage = () => {
+  const { completeStep } = useOnboarding();
+
   const { formProps, saveButtonProps } = useForm({
     resource: "contacts",
     redirect: "list",
+    onMutationSuccess: () => {
+      // Complete onboarding step when first contact is created
+      completeStep("add_first_contact");
+    },
   });
 
   return (
@@ -87,6 +94,7 @@ export const ContactCreatePage = () => {
   );
 };
 
+export * from "./view";
 export const ContactEditPage = () => {
   const { formProps, saveButtonProps } = useForm({
     resource: "contacts",
@@ -118,3 +126,5 @@ export const ContactEditPage = () => {
     </Edit>
   );
 };
+
+export * from "./view";

@@ -1,12 +1,11 @@
 # Node
 node_modules/
-copilot-instructions.md
 
 # Build output
 dist/
 build/
 
-# Environment variables
+# Environment variables  
 .env
 .env.local
 .env.*.local
@@ -15,24 +14,60 @@ build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+*.log
 
 # OS
 .DS_Store
+Thumbs.db
+
+# IDE (keep shared settings, ignore user-specific)
+.idea/
+.vscode/settings.json
+.vscode/launch.json
 
 # Vite
 .vite/
 
-# Supabase
+# Supabase (keep migrations!)
 supabase/.temp/
-supabase/migrations/
+supabase/.branches/
 
-# Misc
-*.log
-.idea/
-.vscode/
+# Snaplet (generated/cache files)
+.snaplet/
 
-# Others
+# Testing
 coverage/
+test-results/
+playwright-report/
 
-# Optional: Ignore public uploads
-public/uploads/
+# Cache directories
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.turbo/
+
+# Package managers (choose one - you have both!)
+# If using npm, remove yarn.lock
+# If using yarn, remove package-lock.json
+# yarn.lock
+# package-lock.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# Database dumps
+*.dump
+*.sql.gz
+scripts/seed-auth-users.sh
+.snaplet
+.github/copilot-instructions.md

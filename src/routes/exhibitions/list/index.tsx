@@ -96,7 +96,7 @@ export const ExhibitionsListPage = ({ children }: React.PropsWithChildren) => {
           <Table.Column<Exhibition>
             dataIndex="name"
             title="Exhibition title"
-            defaultFilteredValue={getDefaultFilter("id", filters)}
+            defaultFilteredValue={getDefaultFilter("name", filters)}
             filterIcon={<SearchOutlined />}
             filterDropdown={(props) => (
               <FilterDropdown {...props}>

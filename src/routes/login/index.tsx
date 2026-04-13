@@ -2,8 +2,13 @@ import { FormEvent, useEffect, useState } from "react";
 
 import { useLogin } from "@refinedev/core";
 import { Button } from "antd";
+import { useNavigate } from "react-router";
+
+const COOKIE_PREFERENCE_KEY = "mcurio:cookie-preference";
+const LOGIN_CREDENTIALS_KEY = "mcurio:login-credentials";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const { mutate: login, isLoading } = useLogin<{
     email: string;
     password: string;
@@ -14,7 +19,14 @@ export const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("mcurio:login-credentials");
+    const cookiePreference = localStorage.getItem(COOKIE_PREFERENCE_KEY);
+
+    if (cookiePreference !== "all") {
+      localStorage.removeItem(LOGIN_CREDENTIALS_KEY);
+      return;
+    }
+
+    const saved = localStorage.getItem(LOGIN_CREDENTIALS_KEY);
     if (!saved) return;
 
     try {
@@ -23,7 +35,7 @@ export const LoginPage = () => {
       setPassword(parsed.password ?? "");
       setRememberCredentials(true);
     } catch {
-      localStorage.removeItem("mcurio:login-credentials");
+      localStorage.removeItem(LOGIN_CREDENTIALS_KEY);
     }
   }, []);
 
@@ -35,14 +47,16 @@ export const LoginPage = () => {
       { email, password },
       {
         onSuccess: () => {
-          if (rememberCredentials) {
+          const cookiePreference = localStorage.getItem(COOKIE_PREFERENCE_KEY);
+
+          if (rememberCredentials && cookiePreference === "all") {
             localStorage.setItem(
-              "mcurio:login-credentials",
+              LOGIN_CREDENTIALS_KEY,
               JSON.stringify({ email, password }),
             );
             return;
           }
-          localStorage.removeItem("mcurio:login-credentials");
+          localStorage.removeItem(LOGIN_CREDENTIALS_KEY);
         },
         onError: (error) => {
           setErrorMessage(
@@ -120,7 +134,7 @@ export const LoginPage = () => {
                   setRememberCredentials(event.target.checked)
                 }
               />
-              <span>Stay logged in</span>
+              <span>Stay logged in on this device</span>
             </label>
 
             {errorMessage && (
@@ -138,39 +152,19 @@ export const LoginPage = () => {
                 arrow_forward
               </span>
             </Button>
+
+            <div style={{ textAlign: "center", marginTop: "16px" }}>
+              <span style={{ color: "#666" }}>Don't have an account? </span>
+              <Button
+                type="link"
+                onClick={() => navigate("/signup")}
+                style={{ padding: 0 }}
+              >
+                Sign up for free
+              </Button>
+            </div>
           </form>
         </div>
-
-        <footer className="mcurio-login-footer">
-          <div className="mcurio-login-feature-grid">
-            <div className="mcurio-login-feature-item">
-              <span className="material-symbols-outlined mcurio-login-feature-icon">
-                inventory_2
-              </span>
-              <span className="mcurio-login-feature-label">
-                Inventory Management
-              </span>
-            </div>
-            <div className="mcurio-login-feature-item">
-              <span className="material-symbols-outlined mcurio-login-feature-icon">
-                brush
-              </span>
-              <span className="mcurio-login-feature-label">
-                Exhibition Tools
-              </span>
-            </div>
-            <div className="mcurio-login-feature-item">
-              <span className="material-symbols-outlined mcurio-login-feature-icon">
-                contacts
-              </span>
-              <span className="mcurio-login-feature-label">
-                Industry Contacts
-              </span>
-            </div>
-          </div>
-
-          <p className="mcurio-login-footer-note"></p>
-        </footer>
       </section>
     </main>
   );

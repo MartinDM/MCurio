@@ -1,139 +1,120 @@
-# MCurio
+<div align="center">
+  <img src="docs/logo.png" alt="MCurio Logo" width="400"/>
+  
+  # MCurio
+  **Modern Museum Collections Management System**
+  
+  ![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
+  ![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)
+  ![Ant Design](https://img.shields.io/badge/Ant%20Design-UI-0170FE?logo=antdesign)
+</div>
 
-MCurio is a museum curation CMS for managing collections and related museum operations.
-It provides authenticated, museum-scoped access to records such as items, contacts,
-exhibitions, and condition reports.
+---
 
-## What MCurio Is
+## 🏛️ What is MCurio?
 
-- A multi-tenant museum management app where a museum acts as the subscription boundary
-- Built as a Refine admin application with Supabase as backend and auth provider
-- Designed so users only access data for their assigned museum
+MCurio is a comprehensive, web-based collections management system designed specifically for museums and cultural institutions. Built with modern web technologies, it provides everything museums need to catalog, track, and manage their collections with professional-grade features and security.
 
-## Tech Stack
+### ✨ Key Highlights
 
-- Frontend: React + TypeScript + Vite
-- UI: Ant Design + Refine (`@refinedev/*`)
-- Backend: Supabase (Postgres + Auth + RLS)
-- Data access: Supabase client via Refine `dataProvider`
-- Routing: `react-router` with Refine router integration
+- **🔐 7-day free trial** with item-limited access (20 items)
+- **👥 Multi-tenant architecture** - secure, museum-scoped data
+- **📚 Complete collections management** - items, exhibitions, loans, conservation
+- **🔍 Advanced search & filtering** across all metadata
+- **📱 Responsive design** for desktop, tablet, and mobile use
+- **💳 Affordable pricing** starting at £14/month
 
-## Supported Entities
-
-The app currently supports the following core entities:
-
-- `museums`
-  - Museum profile and account scope boundary
-- `profiles`
-  - User-to-museum mapping and admin flag (`is_admin`)
-- `items`
-  - Collection objects/artifacts
-  - Can be linked to contacts and exhibitions
-- `contacts`
-  - People/organizations associated with items and museum operations
-- `exhibitions`
-  - Exhibition records for museums
-- `condition_reports`
-  - Conservation/condition tracking linked to items
-
-## Access & Security Model
-
-- Authentication is handled by Supabase Auth
-- Row Level Security (RLS) is enabled for museum-scoped tables
-- Access is filtered by the user profile's `museum_id`
-- Users without an assigned museum are redirected to a dedicated no-access page
-
-## Local Development
-
-### 1) Install dependencies
+## 🚀 Quick Start
 
 ```bash
+# Clone and install
+git clone <repository-url>
+cd MCurio
 npm install
-```
 
-### 2) Start local Supabase
-
-```bash
+# Set up local development
 supabase start
-```
-
-### 3) Ensure database is migrated
-
-```bash
-supabase db reset
-```
-
-### 3.1) Recommended reset flow (migrations + seed + auth users)
-
-```bash
 npm run seed:snaplet:reset
-```
 
-This command runs:
-
-- `supabase db reset`
-- `npm run seed:snaplet:sync`
-- `npm run seed:auth:users`
-
-So after every reset you get:
-
-- schema + RLS migrations applied
-- SQL seed data loaded from `supabase/seed.sql`
-- local auth users recreated and mapped to the demo museum
-
-### 4) Run the app
-
-```bash
+# Start developing
 npm run dev
 ```
 
-### 5) Build check
+## 📋 Core Features
 
-```bash
-npm run build
+| Feature                 | Description                                                       |
+| ----------------------- | ----------------------------------------------------------------- |
+| **Items Management**    | Comprehensive cataloging with metadata, images, and relationships |
+| **Staff & Contacts**    | Role-based access control and external stakeholder management     |
+| **Exhibitions & Loans** | Track temporary displays and item movements                       |
+| **Trial System**        | Automated 7-day trials with database-enforced limitations         |
+| **Search & Export**     | Advanced filtering and PDF label generation                       |
+| **Security**            | Row-level security (RLS) and multi-tenant data isolation          |
+
+## 🎯 Perfect For
+
+- **Small to Medium Museums** - Professional tools without enterprise complexity
+- **Private Collections** - Organize and document personal art collections
+- **Cultural Institutions** - Libraries, galleries, and historical societies
+- **Trial Users** - Explore full functionality with the 7-day free trial
+
+## 📖 Documentation
+
+- **[📋 Complete Feature Documentation](docs/FEATURES.md)** - Comprehensive feature overview
+- **🛠️ Development Setup** - See below for quick setup instructions
+- **💾 Database Schema** - Multi-tenant PostgreSQL with RLS security
+- **🔐 Authentication** - Supabase Auth with role-based permissions
+
+## 🛠️ Tech Stack
+
+**Frontend:** React 18 + TypeScript + Vite + Ant Design + Refine  
+**Backend:** Supabase (PostgreSQL + Auth + RLS + Real-time)  
+**Architecture:** Multi-tenant SaaS with museum-scoped data isolation
+
+## 💳 Pricing
+
+- **Personal Plan:** £14/month - Perfect for individual museums
+- **Professional Plans:** Scaled pricing for larger institutions
+- **Free Trial:** 7 days with full access (20-item limit)
+
+---
+
+## Development & Deployment
+
+### Prerequisites
+
+- Node.js 18+
+- Supabase CLI
+- Modern browser with JavaScript enabled
+
+### Development Setup
+
+1. **Install dependencies:** `npm install`
+2. **Start Supabase:** `supabase start`
+3. **Reset database:** `npm run seed:snaplet:reset`
+4. **Run development server:** `npm run dev`
+5. **Build for production:** `npm run build`
+
+### Environment Configuration
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+MARTIN_AUTH_PASSWORD=secure_dev_password
 ```
 
-## Snaplet Seeding (Optional)
+## 🤝 Contributing
 
-Snaplet is configured for schema-aware seed tooling in this project.
+This project is actively developed for museum professionals. For technical support or feature requests, contact the development team.
 
-- Sync schema model from local DB:
+## 📄 License
 
-```bash
-npm run seed:snaplet:sync
-```
+Proprietary - All rights reserved.
 
-- Generate Snaplet seed artifacts:
+---
 
-```bash
-npm run seed:snaplet:generate
-```
-
-- Seed local auth users only:
-
-```bash
-npm run seed:auth:users
-```
-
-Notes:
-
-- Snaplet reads `seed.config.ts`.
-- Default DB connection is local Supabase (`postgresql://postgres:postgres@127.0.0.1:54322/postgres`).
-- To override DB target, set `SNAPLET_DATABASE_URL` (or `DATABASE_URL`).
-
-## Project Structure (High-Level)
-
-- `src/routes/` — Refine pages and route-level features
-- `src/providers/` — Auth/data/live providers
-- `src/config/resources.tsx` — Resource/menu configuration
-- `src/lib/supabase.ts` — Shared Supabase client
-- `supabase/migrations/` — Database schema and RLS migrations
-
-## Default Local Login Users
-
-The following users are auto-created by `npm run seed:auth:users` and by `npm run seed:snaplet:reset`:
-
-- `michael.scott@dundermifflin.com` / `demodemo`
-- `martinonotts@gmail.com` / `flanimals`
-
-Both are assigned to the seeded primary museum (`11111111-1111-4111-8111-111111111111`) for immediate access.
+<div align="center">
+  <strong>Built with ❤️ for Museums</strong><br>
+  <em>Last updated: April 10, 2026 • Version 2.0.0</em>
+</div>

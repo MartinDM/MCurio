@@ -158,6 +158,20 @@ body > .ant-app,
   gap: 24px;
 }
 
+.mcurio-footer-link-list {
+  display: grid;
+  gap: 6px;
+}
+
+.mcurio-footer-link {
+  color: var(--mcurio-muted);
+  text-decoration: none;
+}
+
+.mcurio-footer-link:hover {
+  color: var(--mcurio-brand);
+}
+
 @media (max-width: 900px) {
   .mcurio-footer-grid {
     grid-template-columns: 1fr;
@@ -166,6 +180,69 @@ body > .ant-app,
 
 .mcurio-subtle {
   color: var(--mcurio-muted);
+}
+
+.mcurio-cookie-banner {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  width: min(420px, calc(100vw - 32px));
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(115, 92, 40, 0.18);
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(249, 249, 247, 0.97) 0%,
+    rgba(242, 244, 242, 0.98) 100%
+  );
+  box-shadow: 0 18px 40px rgba(45, 52, 50, 0.14);
+  backdrop-filter: blur(12px);
+}
+
+.mcurio-cookie-banner__copy {
+  display: grid;
+  gap: 8px;
+}
+
+.mcurio-cookie-banner__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mcurio-brand);
+}
+
+.mcurio-cookie-banner__title {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--mcurio-text);
+}
+
+.mcurio-cookie-banner__text {
+  margin: 0;
+  color: var(--mcurio-muted);
+  line-height: 1.65;
+}
+
+.mcurio-cookie-banner__text a {
+  color: var(--mcurio-brand);
+  text-decoration: none;
+}
+
+.mcurio-cookie-banner__text a:hover {
+  text-decoration: underline;
+}
+
+.mcurio-cookie-banner__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .material-symbols-outlined {
@@ -492,7 +569,7 @@ body > .ant-app,
 }
 
 .mcurio-landing-title {
-  font-size: clamp(2.6rem, 7vw, 5.6rem);
+  font-size: clamp(2rem, 7vw, 5.6rem);
   line-height: 1.08;
   margin: 0 0 20px;
   max-width: 700px;
@@ -505,34 +582,138 @@ body > .ant-app,
   line-height: 1.7;
 }
 
-.mcurio-landing-primary-btn {
+/* MCurio Landing Button Base Styles */
+.mcurio-landing-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+/* Primary Button Modifier */
+.mcurio-landing-btn--primary {
   background: #735c28 !important;
   border-color: #735c28 !important;
-  text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-weight: 700;
   height: 48px;
+  color: white;
   padding-inline: 26px;
 }
 
-.mcurio-landing-nav-primary-btn {
-  background: #5d5e61 !important;
-  border-color: #5d5e61 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
+.mcurio-landing-btn--primary:hover,
+.mcurio-landing-btn--primary:focus {
+  background: #66501d !important;
+  border-color: #66501d !important;
 }
 
-.mcurio-landing-nav-primary-btn:hover,
-.mcurio-landing-nav-primary-btn:focus {
+/* Secondary Button Modifier */
+.mcurio-landing-btn--secondary {
+  background: #8f7f5a !important;
+  border-color: #8f7f5a !important;
+  letter-spacing: 0.14em;
+  height: 48px;
+  color: white;
+  padding-inline: 26px;
+}
+
+.mcurio-landing-btn--secondary:hover,
+.mcurio-landing-btn--secondary:focus,
+.mcurio-landing-btn--secondary:active {
+  background: #7a6b48 !important;
+  border-color: #7a6b48 !important;
+  color: white !important;
+}
+
+.mcurio-landing-btn--secondary.ant-btn:hover,
+.mcurio-landing-btn--secondary.ant-btn:focus,
+.mcurio-landing-btn--secondary.ant-btn:active {
+  background: #7a6b48 !important;
+  border-color: #7a6b48 !important;
+  color: white !important;
+}
+
+/* Nav Primary Button Modifier */
+.mcurio-landing-btn--nav-primary {
+  background: #5d5e61 !important;
+  border-color: #5d5e61 !important;
+  letter-spacing: 0.1em;
+  height: 32px;
+  color: white;
+  padding-inline: 16px;
+}
+
+.mcurio-landing-btn--nav-primary:hover,
+.mcurio-landing-btn--nav-primary:focus {
   background: #515255 !important;
   border-color: #515255 !important;
+}
+
+/* Legacy classes for backwards compatibility */
+.mcurio-landing-primary-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: #735c28 !important;
+  border-color: #735c28 !important;
+  letter-spacing: 0.14em;
+  height: 48px;
+  color: white;
+  padding-inline: 26px;
 }
 
 .mcurio-landing-primary-btn:hover,
 .mcurio-landing-primary-btn:focus {
   background: #66501d !important;
   border-color: #66501d !important;
+}
+
+.mcurio-landing-secondary-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: #8f7f5a !important;
+  border-color: #8f7f5a !important;
+  letter-spacing: 0.14em;
+  height: 48px;
+  color: white;
+  padding-inline: 26px;
+}
+
+.mcurio-landing-secondary-btn:hover,
+.mcurio-landing-secondary-btn:focus,
+.mcurio-landing-secondary-btn:active {
+  background: #7a6b48 !important;
+  border-color: #7a6b48 !important;
+  color: white !important;
+}
+
+.mcurio-landing-secondary-btn.ant-btn:hover,
+.mcurio-landing-secondary-btn.ant-btn:focus,
+.mcurio-landing-secondary-btn.ant-btn:active {
+  background: #7a6b48 !important;
+  border-color: #7a6b48 !important;
+  color: white !important;
+}
+
+.mcurio-landing-nav-primary-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: #5d5e61 !important;
+  border-color: #5d5e61 !important;
+  letter-spacing: 0.1em;
+  height: 32px;
+  color: white;
+  padding-inline: 16px;
+}
+
+.mcurio-landing-nav-primary-btn:hover,
+.mcurio-landing-nav-primary-btn:focus {
+  background: #515255 !important;
+  border-color: #515255 !important;
 }
 
 .mcurio-landing-hero-visual {
@@ -691,7 +872,57 @@ body > .ant-app,
   letter-spacing: 0.04em;
 }
 
+.mcurio-content-page-hero {
+  margin-bottom: 28px;
+}
+
+.mcurio-content-page-title {
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.08;
+}
+
+.mcurio-content-page-intro {
+  max-width: 760px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.mcurio-content-page-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.mcurio-content-page-card {
+  background: #ffffff;
+  border: 1px solid var(--mcurio-border-soft);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(45, 52, 50, 0.06);
+}
+
+.mcurio-content-page-card h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+.mcurio-content-page-card p {
+  margin: 0;
+  line-height: 1.75;
+}
+
 @media (max-width: 900px) {
+  .mcurio-cookie-banner {
+    right: 16px;
+    bottom: 16px;
+    width: calc(100vw - 32px);
+    padding: 18px;
+  }
+
+  .mcurio-cookie-banner__title {
+    font-size: 21px;
+  }
+
   .mcurio-landing-nav {
     padding: 14px 18px;
   }

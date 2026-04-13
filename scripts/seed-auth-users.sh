@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Load local environment variables
+if [[ -f ".env.local" ]]; then
+  source .env.local
+fi
+
 ENV_VARS="$(supabase status -o env)"
 API_URL="$(echo "$ENV_VARS" | awk -F= '/^API_URL=/{print $2}' | tr -d '"')"
 SECRET_KEY="$(echo "$ENV_VARS" | awk -F= '/^SECRET_KEY=/{print $2}' | tr -d '"')"
@@ -69,7 +74,13 @@ PY
   echo "Ensured auth user: ${email}"
 }
 
-ensure_user "michael.scott@dundermifflin.com" "demodemo"
-ensure_user "martinonotts@gmail.com" "flanimals"
+# Ensure environment variable is set
+if [[ -z "${MARTIN_AUTH_PASSWORD:-}" ]]; then
+  echo "Error: MARTIN_AUTH_PASSWORD environment variable is required"
+  echo "Set it in .env.local or as an environment variable"
+  exit 1
+fi
+
+ensure_user "martinonotts@gmail.com" "${MARTIN_AUTH_PASSWORD}"
 
 echo "Auth user seeding complete."
